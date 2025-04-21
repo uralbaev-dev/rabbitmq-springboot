@@ -35,9 +35,9 @@ public class PersonalServiceImpl implements PersonalService {
             personal.setLastName(request.getLastName());
             personal.setPhone(request.getPhone());
             personal.setPosition(request.getPosition());
-            repository.save(personal);
+            Personal savedPersonal = repository.save(personal);
 
-            PersonalResponse personalResponse = personal.map2Response();
+            PersonalResponse personalResponse = savedPersonal.map2Response();
             rabbitProducer.sendPersonalCreated(personalResponse);
 
             log.info("create personal success");
