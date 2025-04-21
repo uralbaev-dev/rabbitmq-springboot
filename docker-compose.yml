@@ -1,0 +1,61 @@
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root123
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5431:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  pgadmin:
+      container_name: pgadmin_container
+      image: dpage/pgadmin4
+      environment:
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+        PGADMIN_CONFIG_SERVER_MODE: 'False'
+      volumes:
+        - pgadmin:/var/lib/pgadmin
+      ports:
+        - "5050:80"
+      networks:
+        - postgres
+      restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"     # App uchun
+      - "15672:15672"   # Web UI uchun
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+#    configs:
+#      - source: rabbitmq-plugins
+#        target: /etc/rabbitmq/enabled_plugins
+    volumes:
+        - rabbitmq-lib:/var/lib/rabbitmq/
+        - rabbitmq-log:/var/log/rabbitmq
+
+volumes:
+  postgres:
+  pgadmin:
+  rabbitmq-lib:
+    driver: local
+  rabbitmq-log:
+    driver: local
+
+networks:
+  postgres:
+
+#configs:
+#  rabbitmq-plugins:
+#    content: "[rabbitmq_management]."
