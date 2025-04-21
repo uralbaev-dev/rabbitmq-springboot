@@ -17,6 +17,8 @@ public class RabbitMQConfig {
 
     public static final String QUEUE = "personal.to.organization";
 
+    public static final String PERSONAL_RESPONSE_QUEUE = "personal.response.queue";
+
     @Bean
     public Queue queue() {
         return new Queue(QUEUE);
@@ -24,7 +26,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue personalResponseQueue() {
-        return new Queue("personal.response.queue");
+        return new Queue(PERSONAL_RESPONSE_QUEUE);
     }
 
     @Bean

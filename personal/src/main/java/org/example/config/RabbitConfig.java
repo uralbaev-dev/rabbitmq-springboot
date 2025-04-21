@@ -22,6 +22,7 @@ public class RabbitConfig {
     public static final String EXCHANGE = "personal.exchange";
     public static final String ROUTING_KEY = "personal.created";
     public static final String PERSONAL_RESPONSE_QUEUE = "personal.response.queue";
+    public static final String PERSONAL_TO_ORGANIZATION = "personal.to.organization";
 
     @Bean
     public DirectExchange exchange() {
@@ -30,13 +31,8 @@ public class RabbitConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue("personal.to.organization");
+        return new Queue(PERSONAL_TO_ORGANIZATION);
     }
-
-//    @Bean
-//    public Queue personalResponseQueue() {
-//        return new Queue("personal.response.queue");
-//    }
 
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {

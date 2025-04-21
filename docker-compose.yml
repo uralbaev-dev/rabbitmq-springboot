@@ -38,9 +38,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-#    configs:
-#      - source: rabbitmq-plugins
-#        target: /etc/rabbitmq/enabled_plugins
     volumes:
         - rabbitmq-lib:/var/lib/rabbitmq/
         - rabbitmq-log:/var/log/rabbitmq
@@ -55,7 +52,3 @@ volumes:
 
 networks:
   postgres:
-
-#configs:
-#  rabbitmq-plugins:
-#    content: "[rabbitmq_management]."

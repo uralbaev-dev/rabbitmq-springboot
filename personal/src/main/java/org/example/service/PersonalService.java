@@ -12,7 +12,17 @@ import org.example.domain.response.PersonalResponse;
 
 public interface PersonalService {
 
+    /**
+     * Create personal
+     * @param request firstName, lastName, phone, position
+     * @return personal data
+     */
     ApiResponse<PersonalResponse> createPersonal(PersonalCreateRequest request);
 
+    /**
+     * Get Personal
+     * @param id personalId
+     * @return personal data
+     */
     ApiResponse<PersonalResponse> getPersonal(Long id);
 }

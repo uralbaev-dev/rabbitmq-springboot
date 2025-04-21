@@ -51,10 +51,8 @@ public class PersonalServiceImpl implements PersonalService {
     @Override
     public ApiResponse<PersonalResponse> getPersonal(Long id) {
         log.info("get personal");
-//        repository.findById(id).ifPresent(personal -> {
-//            PersonalResponse personalResponse = personal.map2Response();
-//        });
         Personal personal = repository.findById(id).orElseThrow(() -> new PersonalNotFoundException("Personal not found with ID: " + id));
+        log.info("get personal success");
         return ApiResponse.success(0, "OK", personal.map2Response());
     }
 }

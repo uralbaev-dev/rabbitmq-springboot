@@ -1,6 +1,7 @@
 package org.example.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.example.domain.OrganizationResponseDTO;
 import org.example.domain.PersonalDTO;
 import org.example.entity.Organization;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class PersonalMessageListener {
 
@@ -24,15 +26,17 @@ public class PersonalMessageListener {
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE)
     public void receivePersonal(PersonalDTO dto) {
-        System.out.println("Message received: ");
+        log.info("Message received: ");
 
-        // Save to DB
         Organization organization = new Organization();
         organization.setPersonalId(dto.getPersonalId());
 
+        // Save to DB
         Organization saved = organizationRepository.save(organization);
 
+        // send personalId and organizationId
         OrganizationResponseDTO responseDTO = new OrganizationResponseDTO(dto.getPersonalId(), saved.getId());
+        log.info("Success sending personal message");
         messageSender.sendOrganizationCreated(responseDTO);
     }
 }
