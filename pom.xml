@@ -19,9 +19,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>21</maven.compiler.release>
     <spring.boot.maven.plugin.version>3.3.10</spring.boot.maven.plugin.version>
     <spring.boot.dependecies.version>3.3.10</spring.boot.dependecies.version>
+    <spring-cloud.version>2023.0.1</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -32,6 +33,14 @@
         <version>${spring.boot.maven.plugin.version}</version>
         <scope>import</scope>
         <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

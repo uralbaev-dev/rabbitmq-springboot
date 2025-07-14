@@ -7,7 +7,8 @@ spring:
   datasource:
       username: 'postgres'
       url: jdbc:postgresql://localhost:5431/postgres
-      password: 'root123'
+      password: 'postgres'
+      driver-class-name: org.postgresql.Driver
   jpa:
       properties:
         hibernate:
@@ -23,3 +24,24 @@ spring:
       port: 5672
       username: guest
       password: guest
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    ratelimiters:
+      enabled: true
+
+resilience4j:
+  ratelimiter:
+    instances:
+      personal-limiter:
+        limit-for-period: 5
+        limit-refresh-period: 15s
+        timeout-duration: 10s
+        register-health-indicator: true

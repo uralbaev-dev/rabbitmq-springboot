@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.request.PersonalCreateRequest;
@@ -24,12 +25,14 @@ public class PersonalController {
     private final PersonalService personalService;
 
     @PostMapping
+    @RateLimiter(name = "personal-limiter")
     public ResponseEntity<ApiResponse<PersonalResponse>> createPersonal(@RequestBody @Valid PersonalCreateRequest request) {
         ApiResponse<PersonalResponse> response = personalService.createPersonal(request);
         return ResponseEntity.status(response.getCode() == 0 ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST).body(response);
     }
 
     @GetMapping
+    @RateLimiter(name = "personal-limiter")
     public ResponseEntity<ApiResponse<PersonalResponse>> getPersonal(@RequestParam(value = "id") Long id) {
         ApiResponse<PersonalResponse> response = personalService.getPersonal(id);
         return ResponseEntity.status(response.getCode() == 0 ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);

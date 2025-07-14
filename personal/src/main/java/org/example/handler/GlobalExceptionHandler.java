@@ -1,6 +1,7 @@
 package org.example.handler;
 
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import lombok.extern.log4j.Log4j2;
 import org.example.exceptions.ExternalServerIntegrationException;
 import org.example.exceptions.ForbiddenException;
@@ -21,6 +22,20 @@ import static org.springframework.http.HttpStatus.*;
 @Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<ExceptionResponse> handleRateLimitException(RequestNotPermitted ex) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .errorCode(400)
+                                .message("Too many requests - please try again later")
+                                .code(BAD_REQUEST.getReasonPhrase())
+                                .timestamp(System.currentTimeMillis())
+                                .build()
+                );
+    }
 
     @ExceptionHandler(PersonalNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handlePersonalNotFoundException(PersonalNotFoundException exp) {
